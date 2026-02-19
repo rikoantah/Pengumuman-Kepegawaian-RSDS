@@ -1,81 +1,71 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pengumuman Kepegawaian</title>
 
 <style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  background:#f2f2f7;
-}
-
-.container{
-  max-width:480px;
-  margin:auto;
-  padding:16px;
-}
-
-h1{
-  font-size:1.4rem;
-  margin-bottom:16px;
-}
-
-.card{
-  background:#fff;
-  border-radius:18px;
-  margin-bottom:16px;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-  overflow:hidden;
-}
-
-.card img{
-  width:100%;
-  display:block;
-}
-
-.card-content{
-  padding:14px;
-}
-
-.title{
-  font-weight:700;
-  font-size:1.05rem;
-  margin-bottom:6px;
-}
-
-.desc{
-  font-size:.9rem;
-  color:#555;
-  margin-bottom:12px;
-}
-
-.actions{
-  display:flex;
-  gap:10px;
-}
-
-.actions a{
-  flex:1;
-  text-align:center;
-  padding:8px;
-  border-radius:10px;
-  text-decoration:none;
-  font-size:.85rem;
-  font-weight:600;
-}
-
-.btn-surat{
-  background:#007aff;
-  color:#fff;
-}
-
-.btn-link{
-  background:#e5e5ea;
-  color:#000;
-}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:#f2f2f7;
+    color:#111;
+  }
+  .container{
+    max-width:520px;
+    margin:auto;
+    padding:16px 14px 40px;
+  }
+  h1{
+    font-size:1.35rem;
+    margin:8px 0 14px;
+  }
+  .card{
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 8px 22px rgba(0,0,0,.08);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .card img{
+    width:100%;
+    display:block;
+  }
+  .content{
+    padding:14px;
+  }
+  .title{
+    font-weight:700;
+    font-size:1.05rem;
+    margin-bottom:6px;
+  }
+  .desc{
+    font-size:.9rem;
+    color:#555;
+    margin-bottom:12px;
+  }
+  .actions{
+    display:flex;
+    gap:10px;
+  }
+  .actions a{
+    flex:1;
+    text-align:center;
+    padding:9px 0;
+    border-radius:10px;
+    font-size:.85rem;
+    font-weight:600;
+    text-decoration:none;
+  }
+  .btn-surat{
+    background:#007aff;
+    color:#fff;
+  }
+  .btn-link{
+    background:#e5e5ea;
+    color:#000;
+  }
 </style>
 </head>
 
@@ -86,30 +76,44 @@ h1{
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwVscjSLHAfX76UR4YiQ1TL82DVPCm7jnK9ka9ftf-kOJVG_OSM8UFdr1l8ENrnI_ms/exec";
+  const SUPABASE_URL = "https://xmbsrxkhatebzsqeyxms.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtYnNyeGtoYXRlYnpzcWV5eG1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MTU4NjYsImV4cCI6MjA4NjQ5MTg2Nn0.TJCPXhSm_XrIXIl0BgYn3LaF5O7j5zhfqghJUgJSy88";
 
-fetch(API_URL)
-  .then(r => r.json())
-  .then(data => {
+  async function loadPengumuman(){
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/pengumuman?status=eq.Aktif&order=created_at.desc`,
+      {
+        headers:{
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    const data = await res.json();
     const list = document.getElementById("list");
+    list.innerHTML = "";
+
     data.forEach(item => {
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        ${item.gambar ? `<img src="${item.gambar}">` : ``}
-        <div class="card-content">
+        ${item.gambar_url ? `<img src="${item.gambar_url}" alt="">` : ``}
+        <div class="content">
           <div class="title">${item.judul}</div>
           <div class="desc">${item.ringkasan || ""}</div>
           <div class="actions">
-            ${item.surat ? `<a class="btn-surat" href="${item.surat}" target="_blank">📄 Surat</a>` : ``}
-            ${item.link ? `<a class="btn-link" href="${item.link}" target="_blank">🔗 Link</a>` : ``}
+            ${item.surat_url ? `<a class="btn-surat" href="${item.surat_url}" target="_blank">📄 Surat</a>` : ``}
+            ${item.link_eksternal ? `<a class="btn-link" href="${item.link_eksternal}" target="_blank">🔗 Link</a>` : ``}
           </div>
         </div>
       `;
       list.appendChild(card);
     });
-  });
+  }
+
+  loadPengumuman();
 </script>
 </body>
 </html>
