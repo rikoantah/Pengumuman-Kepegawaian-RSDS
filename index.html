@@ -3,117 +3,226 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pengumuman Kepegawaian</title>
+<title>Informasi Kepegawaian RSDS</title>
 
 <style>
-  body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-    background:#f2f2f7;
-    color:#111;
-  }
-  .container{
-    max-width:520px;
-    margin:auto;
-    padding:16px 14px 40px;
-  }
-  h1{
-    font-size:1.35rem;
-    margin:8px 0 14px;
-  }
-  .card{
-    background:#fff;
-    border-radius:18px;
-    box-shadow:0 8px 22px rgba(0,0,0,.08);
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-  .card img{
-    width:100%;
-    display:block;
-  }
-  .content{
-    padding:14px;
-  }
-  .title{
-    font-weight:700;
-    font-size:1.05rem;
-    margin-bottom:6px;
-  }
-  .desc{
-    font-size:.9rem;
-    color:#555;
-    margin-bottom:12px;
-  }
-  .actions{
-    display:flex;
-    gap:10px;
-  }
-  .actions a{
-    flex:1;
-    text-align:center;
-    padding:9px 0;
-    border-radius:10px;
-    font-size:.85rem;
-    font-weight:600;
-    text-decoration:none;
-  }
-  .btn-surat{
-    background:#007aff;
-    color:#fff;
-  }
-  .btn-link{
-    background:#e5e5ea;
-    color:#000;
-  }
+:root{
+  --primary:#0a3d62;
+  --primary-light:#145a86;
+  --accent:#0f6cbf;
+  --bg:#f4f6f9;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  color:#fff;
+  padding:28px 18px 32px;
+  text-align:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
+}
+
+.header h1{
+  margin:0;
+  font-size:1.4rem;
+  font-weight:600;
+  letter-spacing:.4px;
+}
+
+.header span{
+  display:block;
+  font-size:.85rem;
+  opacity:.85;
+  margin-top:6px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:640px;
+  margin:-24px auto 40px;
+  padding:0 16px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.08);
+  overflow:hidden;
+  margin-bottom:20px;
+  transition:.25s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 36px rgba(0,0,0,.12);
+}
+
+.card img{
+  width:100%;
+  display:block;
+}
+
+.content{
+  padding:18px;
+}
+
+.meta{
+  font-size:.75rem;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.title{
+  font-size:1.1rem;
+  font-weight:600;
+  line-height:1.35;
+  margin-bottom:8px;
+}
+
+.desc{
+  font-size:.92rem;
+  color:#555;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:10px;
+}
+
+.actions a{
+  flex:1;
+  text-align:center;
+  padding:10px 0;
+  border-radius:10px;
+  font-size:.85rem;
+  font-weight:600;
+  text-decoration:none;
+  transition:.2s;
+}
+
+.btn-surat{
+  background:var(--accent);
+  color:#fff;
+}
+
+.btn-surat:hover{
+  background:#0c5ca8;
+}
+
+.btn-link{
+  background:#e8eef5;
+  color:#0a3d62;
+}
+
+.btn-link:hover{
+  background:#d6e4f2;
+}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+  font-size:.95rem;
+}
+
+.empty span{
+  font-size:2rem;
+  display:block;
+  margin-bottom:10px;
+}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+  .header h1{font-size:1.2rem}
+  .container{margin-top:-20px}
+}
 </style>
 </head>
 
 <body>
+
+<div class="header">
+  <h1>Informasi Kepegawaian RSDS</h1>
+  <span>Rumah Sakit Umum Daerah dr. Soedarso</span>
+</div>
+
 <div class="container">
-  <h1>📢 Pengumuman Kepegawaian</h1>
   <div id="list"></div>
 </div>
 
 <script>
-  const SUPABASE_URL = "https://xmbsrxkhatebzsqeyxms.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtYnNyeGtoYXRlYnpzcWV5eG1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MTU4NjYsImV4cCI6MjA4NjQ5MTg2Nn0.TJCPXhSm_XrIXIl0BgYn3LaF5O7j5zhfqghJUgJSy88";
+const SUPABASE_URL = "https://xmbsrxkhatebzsqeyxms.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtYnNyeGtoYXRlYnpzcWV5eG1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MTU4NjYsImV4cCI6MjA4NjQ5MTg2Nn0.TJCPXhSm_XrIXIl0BgYn3LaF5O7j5zhfqghJUgJSy88";
 
-  async function loadPengumuman(){
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/pengumuman?status=eq.Aktif&order=created_at.desc`,
-      {
-        headers:{
-          "apikey": SUPABASE_KEY,
-          "Authorization": "Bearer " + SUPABASE_KEY
-        }
+async function loadPengumuman(){
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/pengumuman?status=eq.Aktif&order=created_at.desc`,
+    {
+      headers:{
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
       }
-    );
+    }
+  );
 
-    const data = await res.json();
-    const list = document.getElementById("list");
-    list.innerHTML = "";
+  const data = await res.json();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-    data.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.innerHTML = `
-        ${item.gambar_url ? `<img src="${item.gambar_url}" alt="">` : ``}
-        <div class="content">
-          <div class="title">${item.judul}</div>
-          <div class="desc">${item.ringkasan || ""}</div>
-          <div class="actions">
-            ${item.surat_url ? `<a class="btn-surat" href="${item.surat_url}" target="_blank">📄 Surat</a>` : ``}
-            ${item.link_eksternal ? `<a class="btn-link" href="${item.link_eksternal}" target="_blank">🔗 Link</a>` : ``}
-          </div>
-        </div>
-      `;
-      list.appendChild(card);
-    });
+  if(data.length===0){
+    list.innerHTML = `
+      <div class="empty">
+        <span>📭</span>
+        Belum ada informasi terbaru
+      </div>
+    `;
+    return;
   }
 
-  loadPengumuman();
+  data.forEach(item => {
+    const tanggal = item.created_at
+      ? new Date(item.created_at).toLocaleDateString("id-ID",
+        { day:"2-digit", month:"long", year:"numeric" })
+      : "";
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      ${item.gambar_url ? `<img src="${item.gambar_url}" alt="">` : ``}
+      <div class="content">
+        <div class="meta">${tanggal}</div>
+        <div class="title">${item.judul}</div>
+        <div class="desc">${item.ringkasan || ""}</div>
+        <div class="actions">
+          ${item.surat_url ? `<a class="btn-surat" href="${item.surat_url}" target="_blank">📄 Unduh Surat</a>` : ``}
+          ${item.link_eksternal ? `<a class="btn-link" href="${item.link_eksternal}" target="_blank">🔗 Lihat Detail</a>` : ``}
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+loadPengumuman();
 </script>
+
 </body>
 </html>
