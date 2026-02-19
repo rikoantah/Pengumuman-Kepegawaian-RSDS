@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pengumuman Kepegawaian</title>
+
+<style>
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:#f2f2f7;
+}
+
+.container{
+  max-width:480px;
+  margin:auto;
+  padding:16px;
+}
+
+h1{
+  font-size:1.4rem;
+  margin-bottom:16px;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+
+.card img{
+  width:100%;
+  display:block;
+}
+
+.card-content{
+  padding:14px;
+}
+
+.title{
+  font-weight:700;
+  font-size:1.05rem;
+  margin-bottom:6px;
+}
+
+.desc{
+  font-size:.9rem;
+  color:#555;
+  margin-bottom:12px;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+}
+
+.actions a{
+  flex:1;
+  text-align:center;
+  padding:8px;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+.btn-surat{
+  background:#007aff;
+  color:#fff;
+}
+
+.btn-link{
+  background:#e5e5ea;
+  color:#000;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>📢 Pengumuman Kepegawaian</h1>
+  <div id="list"></div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwVscjSLHAfX76UR4YiQ1TL82DVPCm7jnK9ka9ftf-kOJVG_OSM8UFdr1l8ENrnI_ms/exec";
+
+fetch(API_URL)
+  .then(r => r.json())
+  .then(data => {
+    const list = document.getElementById("list");
+    data.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        ${item.gambar ? `<img src="${item.gambar}">` : ``}
+        <div class="card-content">
+          <div class="title">${item.judul}</div>
+          <div class="desc">${item.ringkasan || ""}</div>
+          <div class="actions">
+            ${item.surat ? `<a class="btn-surat" href="${item.surat}" target="_blank">📄 Surat</a>` : ``}
+            ${item.link ? `<a class="btn-link" href="${item.link}" target="_blank">🔗 Link</a>` : ``}
+          </div>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  });
+</script>
+</body>
+</html>
